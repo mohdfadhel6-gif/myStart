@@ -1,0 +1,124 @@
+
+Switch> enable
+Switch# configure terminal
+Switch(config)# vlan 10
+Switch(config-vlan)# name Admin-IT
+Switch(config-vlan)# vlan 20
+Switch(config-vlan)# name HR-Finance
+Switch(config-vlan)# vlan 30
+Switch(config-vlan)# name Reception
+Switch(config-vlan)# exit
+Switch(config)# interface range fastEthernet 0/2 - 4
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 10
+Switch(config-if-range)# exit
+Switch(config)# interface range fastEthernet 0/5 - 7
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 20
+Switch(config-if-range)# exit
+Switch(config)# interface range fastEthernet 0/8 - 11
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 30
+Switch(config-if-range)# exit
+Switch(config)# interface gigabitEthernet 0/1
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# exit
+Switch(config)# do write
+
+
+/* other method for switch
+
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface range fastEthernet 0/2 - 4
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 10
+Switch(config-if-range)# exit
+Switch(config)# interface range fastEthernet 0/5 - 7
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 20
+Switch(config-if-range)# exit
+Switch(config)# interface range fastEthernet 0/8 - 10
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 30
+Switch(config-if-range)# exit
+Switch(config)# interface gigabitEthernet 0/1
+Switch(config-if)# switchport mode trunk
+/*notes : If you simply type those two lines and do nothing else, you leave your network open to two severe layer-2 attacks:
+
+1. DTP Exploitation (Dynamic Trunking Protocol)
+By default, Cisco ports actively try to negotiate trunk links using DTP. If an attacker plugs their laptop directly into a port configured to negotiate dynamically, they can use software to trick the switch into creating a trunk link to their laptop. Once they have a trunk link, they can sniff traffic from all VLANs in your company.
+
+2. VLAN Hopping via the Native VLAN
+As we discussed earlier, Cisco switches assign untagged traffic to VLAN 1 by default. If your trunk link keeps VLAN 1 as the Native VLAN, an attacker can use a double-tagging exploit to bypass your firewall and inject malicious packets directly into secure networks (like your Admin or Finance VLANs)
+
+Switch(config)# interface gigabitEthernet 0/1
+Switch(config-if)# switchport mode trunk
+
+! 1. Stop DTP negotiation completely to prevent rogue trunks
+Switch(config-if)# switchport nonegotiate
+
+! 2. Move the Native VLAN to a dead-end, isolated number
+Switch(config-if)# switchport trunk native vlan 1000
+
+! 3. Whitelist ONLY the VLANs that actually need to cross this link
+Switch(config-if)# switchport trunk allowed vlan 10,20,30
+
+*/
+
+
+Switch(config-if)# exit
+Switch(config)# do write
+
+*/
+
+
+
+
+
+Router> enable
+Router# configure terminal
+Router(config)# interface gigabitEthernet 0/0
+Router(config-if)# no shutdown
+Router(config-if)# exit
+Router(config)# interface gigabitEthernet 0/0.10
+Router(config-subif)# encapsulation dot1Q 10
+Router(config-subif)# ip address 192.168.1.1 255.255.255.192
+Router(config-subif)# exit
+Router(config)# interface gigabitEthernet 0/0.20
+Router(config-subif)# encapsulation dot1Q 20
+Router(config-subif)# ip address 192.168.1.65 255.255.255.192
+Router(config-subif)# exit
+Router(config)# interface gigabitEthernet 0/0.30
+Router(config-subif)# encapsulation dot1Q 30
+Router(config-subif)# ip address 192.168.1.129 255.255.255.192
+Router(config-subif)# exit
+Router(config)# ip dhcp excluded-address 192.168.1.1
+Router(config)# ip dhcp excluded-address 192.168.1.65
+Router(config)# ip dhcp excluded-address 192.168.1.129
+Router(config)# ip dhcp pool Admin_Pool
+Router(dhcp-config)# network 192.168.1.0 255.255.255.192
+Router(dhcp-config)# default-router 192.168.1.1
+Router(dhcp-config)# exit
+Router(config)# ip dhcp pool HR_Finance_Pool
+Router(dhcp-config)# network 192.168.1.64 255.255.255.192
+Router(dhcp-config)# default-router 192.168.1.65
+Router(dhcp-config)# exit
+Router(config)# ip dhcp pool Reception_Pool
+Router(dhcp-config)# network 192.168.1.128 255.255.255.192
+Router(dhcp-config)# default-router 192.168.1.129
+Router(dhcp-config)# exit
+Router(config)# do write
+
+
+
+/* you can also add for each vlan :
+
+Router(dhcp-config)# default-router 192.168.1.65 (same default-router)
+Router(dhcp-config)# domain-name xxx.com
+
+
+*/
+
+
+
