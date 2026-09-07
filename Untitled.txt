@@ -1,4 +1,4 @@
-
+/* small office configuration */
 Switch> enable
 Switch# configure terminal
 Switch(config)# vlan 10
