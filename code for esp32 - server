@@ -1,0 +1,115 @@
+#include <Arduino.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "WiFi.h"
+#include <WebServer.h>
+#include <ArrayList.h>
+#include <time.h>
+
+
+TaskHandle_t initWifi_Handle;
+TaskHandle_t Website_Handle;
+TaskHandle_t TaskHttpHandle_Handle;
+
+
+const char* ssid = "esp32_AP";
+const char* password = "123456789";
+
+ArrayList<String> webtable(ArrayList<String>::DYNAMIC2, 50);
+
+
+WebServer server(80);
+
+void TaskinitWifi(void *pvParameter);
+void TaskWebsite(void *pvParameter);
+void TaskHttpHandle(void *pvParameter);
+
+void setup(){
+
+Serial.begin(115200);
+xTaskCreate(TaskinitWifi,"initWifi",4096,NULL,3,&initWifi_Handle);
+xTaskCreate(TaskWebsite,"create the website",65536,NULL,3,&Website_Handle);
+xTaskCreate(TaskHttpHandle,"handle http requests",4096,NULL,1,&TaskHttpHandle_Handle);
+configTime(3 * 3600, 0, "pool.ntp.org");
+
+
+
+}
+
+
+
+void loop(){
+
+}
+
+void TaskinitWifi(void *pvParameter){
+WiFi.mode(WIFI_AP_STA);
+WiFi.softAP(ssid,password);
+WiFi.begin("Mohammed_EXT","moh_461234");
+Serial.println(WiFi.softAPIP());
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);                     
+Serial.print(".");}
+xTaskNotifyGive(Website_Handle);
+vTaskSuspend(NULL);
+}
+
+
+void TaskWebsite(void *pvParameter){
+ ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
+  server.on("/update",HTTP_POST, []() {
+ if(server.hasArg("value")){
+      time_t now;
+      struct tm timeinfo;
+      time(&now);
+      localtime_r(&now, &timeinfo);
+      char timeNow[32];
+      strftime(timeNow, sizeof(timeNow), "%Y-%m-%d %H:%M:%S", &timeinfo);
+       webtable.add(String(timeNow));
+       server.send(200,"text/plain","ok");
+  }
+});
+  
+
+  server.on("/", []() {
+    String website = "<html><title>ESP WiFi OBJ detector</title>"
+    "<style>"
+                 "body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; }"
+                 "h1 { color: #333; }"
+                 "table { margin: auto; border-collapse: collapse; width: 80%; }"
+                 "th, td { border: 1px solid #666; padding: 10px; }"
+                 "th { background-color: #4CAF50; color: white; }"
+                 "tr:nth-child(even) { background-color: #eaf2f8; }"
+                 "</style>"
+                 "</head>"
+                 "<body>"
+                 "<h1>ESP WiFi Object Detection Timeline</h1>"
+                 "<table>"
+                 "<tr><th> Obj detection time</th></tr>";
+  if(webtable.size()>0){
+    for(int i=0;i<webtable.size();i++){
+    website+="<tr><td>obj detected at"+ String(webtable.get(i))+"</td></tr>";
+    }
+  }else{
+    website+="<tr><td>no obj detected yet</td></tr>";
+  }
+    website+="</table></html>";
+    server.send(200, "text/html",website );
+  });
+  
+xTaskNotifyGive(TaskHttpHandle_Handle);
+vTaskSuspend(NULL);
+}
+
+
+void TaskHttpHandle(void *pvParameter){
+ ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+  server.begin();
+ for(;;){
+  server.handleClient();
+ vTaskDelay(50 / portTICK_PERIOD_MS);
+ }
+
+}
+
+
