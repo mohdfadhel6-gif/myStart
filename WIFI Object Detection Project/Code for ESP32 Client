@@ -1,0 +1,115 @@
+#include <ArrayList.h>
+
+#include <Arduino.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "WiFi.h"
+#include <ArrayList.h>
+#include <math.h>
+#include <HTTPClient.h>
+
+
+
+const char* ssid = "esp32_AP";
+const char* password = "123456789";
+const char* serverIP ="192.168.4.1";
+float avg;
+
+
+
+
+TaskHandle_t initWifi_Handle;
+TaskHandle_t avg_Handle;
+TaskHandle_t Obj_Handle;
+
+void TaskinitWifi(void *pvParameter);
+void Taskavg(void *pvParameter);
+void TaskObjDetect(void *pvParameter);
+
+void setup(){
+Serial.begin(115200);
+xTaskCreate(TaskinitWifi,"initWifi",4096,NULL,3,&initWifi_Handle);
+xTaskCreate(Taskavg,"calculate avg",65536,NULL,2,&avg_Handle);
+xTaskCreate(TaskObjDetect,"OBJ dectection and send data",4096,NULL,1,&Obj_Handle);
+
+
+}
+
+
+void loop(){
+
+}
+
+
+void TaskinitWifi(void *pvParameter){
+WiFi.mode(WIFI_STA);
+WiFi.begin(ssid,password);
+while(WiFi.status() != WL_CONNECTED){
+  vTaskDelay(1000/portTICK_PERIOD_MS);
+ }
+ Serial.print("connected");
+ xTaskNotifyGive(avg_Handle);
+ vTaskSuspend(NULL);
+}
+
+
+
+void Taskavg(void *pvParameter){
+  if(ulTaskNotifyTake(pdTRUE,portMAX_DELAY)){
+ArrayList<int> data(ArrayList<int>::DYNAMIC2, 50);
+
+int count =0;
+int RSSI;
+Serial.println("start avg");
+while(count<20000){
+  RSSI = WiFi.RSSI();
+  int index = data.indexOf(RSSI);
+  if(index<0){   
+     data.add(RSSI);
+  }
+  count++;
+  vTaskDelay(1);
+}
+  int sum =0;
+  for(int i =0; i<data.size();i++){
+    sum+=data.get(i);
+  }
+  avg = (float)sum/data.size();
+  xTaskNotifyGive(Obj_Handle);
+  vTaskSuspend(NULL);
+  }
+}
+
+void TaskObjDetect(void *pvParameter){
+ ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
+ Serial.println("System Start");
+ float lower = avg - 7;
+ float higher = avg + 7;
+ int count=0;
+  while(1){
+  float RSSI = WiFi.RSSI();
+  int lastEnter = 0;
+  if((RSSI<lower || RSSI>higher) && (millis()-lastEnter >= 100)){
+    Serial.println("obj detected");
+    if(WiFi.status() == WL_CONNECTED){
+
+      HTTPClient http;
+      String url = "http://192.168.4.1/update";
+
+      http.begin(url);
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      int send = http.POST("value=1");
+
+      if(send<0){
+        Serial.println("error");
+      }
+      http.end();
+    }
+    
+    }
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    lastEnter = millis();
+  }
+  
+}
