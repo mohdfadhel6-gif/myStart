@@ -1,0 +1,434 @@
+/* ===== Global Styles ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    color: #333;}
+/* ===== Global Styles ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+/* ===== Header ===== */
+header {
+    background: linear-gradient(135deg, #1e3a8a, #374ee2);
+    color: #fff;
+    padding: 25px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    transition: all 0.3s ease;
+
+    display: flex;          
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+header .Abtn {
+    position: absolute;
+    left: 20px;       /* real left */
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #012dee, #00c3ff);
+    color: white;
+    border-radius: 11px;
+    text-decoration: none;
+}
+header .ADT{
+    position: absolute;
+    right: 20px;       /* real left */
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(11, 15, 144);
+}
+
+
+header h1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+
+}
+
+/* ===== Main Layout ===== */
+main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* ===== Books Grid ===== */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+/* ===== Book Card ===== */
+.book-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.book-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+/* ===== Book Image Fix ===== */
+.book-card img {
+    width: 100%;
+    height: auto;          /* Natural proportional height */
+    object-fit: contain;   /* Show full image without cropping */
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Title */
+.book-card h3 {
+    font-size: 20px;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #1e40af;
+}
+
+/* Description */
+.book-card .description {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 10px;
+    height: 80px;
+    overflow: hidden;
+    color: #555;
+}
+
+/* Actions box containing view/edit/delete links */
+.book-card .card-actions {
+    margin-top: 12px;
+    padding: 8px;
+    background: linear-gradient(180deg, #ffffff, #f6f9ff);
+    border: 1px solid rgba(30,58,138,0.06);
+    border-radius: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Make all action links consistent in size and alignment */
+.book-card .card-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    min-width: 84px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.book-card .card-actions .view-details {
+    background: linear-gradient(135deg, #1e3a8a, #374ee2);
+    color: #fff;
+    flex: 1 1 auto;
+}
+.book-card .card-actions .edit {
+    background: linear-gradient(135deg, #00c3ff, #1e90ff);
+    color: #06205b;
+    flex: 0 0 auto;
+}
+.book-card .card-actions .delete {
+    background: linear-gradient(135deg, #ff6b6b, #ff3b3b);
+    color: #fff;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 420px) {
+    .book-card .card-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .book-card .card-actions a {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* ===== View Details Button ===== */
+.view-details {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: #1e3a8a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.view-details:hover {
+    background: #374ee2;
+}
+
+/* ===== Footer ===== */
+footer {
+    margin-top: 50px;
+    padding: 15px;
+    background: #180585;
+    color: white;
+    text-align: center;
+    font-size: 14px;}
+/* ===== Book Card Action Buttons - Smaller ===== */
+.book-card .card-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.book-card .card-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;  /* smaller padding */
+    border-radius: 6px;  /* slightly smaller corners */
+    font-size: 12px;     /* smaller font */
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 60px;     /* smaller width */
+    flex: 0 0 auto;      /* don't stretch */
+    text-align: center;
+}
+
+/* Specific button colors */
+.book-card .card-actions .view-details {
+    background: linear-gradient(135deg, #1e3a8a, #374ee2);
+    color: #fff;
+}
+
+.book-card .card-actions .edit {
+    background: linear-gradient(135deg, #00c3ff, #1e90ff);
+    color: #06205b;
+}
+
+.book-card .card-actions .delete {
+    background: linear-gradient(135deg, #ff6b6b, #ff3b3b);
+    color: #fff;
+}
+
+/* Hover & focus effects */
+.book-card .card-actions a:hover,
+.book-card .card-actions a:focus {
+    transform: translateY(-1px);
+    opacity: 0.95;
+    outline: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+/* Responsive for small screens */
+@media (max-width: 420px) {
+    .book-card .card-actions {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .book-card .card-actions a {
+        width: 100%;
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+}
+/* ===== View Details Button ===== */
+.view-details {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: #1e3a8a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.view-details:hover {
+    background: #374ee2;
+}
+
+
+.dropdown {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;  /* above other header elements */
+}
+
+.dropbtn {
+    background: linear-gradient(135deg, #012dee, #00c3ff);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 11px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+    backdrop-filter: blur(4px);
+}
+
+.dropbtn:hover {
+    background: linear-gradient(135deg, #00c3ff, #012dee);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 10px);
+    min-width: 200px;
+    background: linear-gradient(180deg, #ffffff, #f6fbff);
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(2,6,23,0.14);
+    padding: 6px;
+    z-index: 1001;
+    transition: opacity 160ms ease, transform 160ms ease;
+    opacity: 0;
+    transform: translateY(-6px);
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 14px;
+    color: #0f2b79;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: 4px;
+    background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+    transition: all 0.2s ease;
+}
+
+.dropdown-content a:hover,
+.dropdown-content a:focus {
+    background: linear-gradient(135deg, #012dee, #00c3ff);
+    color: #fff;
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.admin-log{
+    width: 900px;
+    height: 400px;
+    background:linear-gradient(135deg, #012dee, #00c3ff);
+    border-radius: 15px; 
+    color: rgb(0, 0, 0);
+    display: flex;
+
+    /* change to stack children vertically and center them */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+/* form & label layout inside the admin box */
+.admin-log form {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.admin-log .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.admin-log label {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* make inputs full width of the form container */
+.admin-log input{
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* submit button */
+.admin-log .login-btn {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    background:linear-gradient(135deg, #006ff7, #8000ff);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+.admin-log .login-btn:hover { opacity: 0.95; }
+
+
+/* ===== Footer ===== */
+footer {
+    margin-top: 50px;
+    padding: 15px;
+    background: #040c67;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+}

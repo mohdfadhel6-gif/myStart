@@ -1,0 +1,260 @@
+/* ===== Global & Layout Styles ===== */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the main content takes up remaining space */
+.container {
+    flex: 1;
+    width: 85%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+/* ===== Integrated Header (from styleadmin.css) ===== */
+header {
+    background: linear-gradient(135deg, #1e3a8a, #374ee2);
+    color: #fff;
+    padding: 25px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    transition: all 0.3s ease;
+    display: flex;          
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+header h1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+header .ADT {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff4d4d; /* Adjusted red for better visibility on blue */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* ===== Integrated Dropdown Menu (from styleadmin.css) ===== */
+.dropdown {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.dropbtn {
+    background: linear-gradient(135deg, #012dee, #00c3ff);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 11px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+    backdrop-filter: blur(4px);
+}
+
+.dropbtn:hover {
+    background: linear-gradient(135deg, #00c3ff, #012dee);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 10px);
+    min-width: 200px;
+    background: linear-gradient(180deg, #ffffff, #f6fbff);
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(2,6,23,0.14);
+    padding: 6px;
+    z-index: 1001;
+    transition: opacity 160ms ease, transform 160ms ease;
+    opacity: 0;
+    transform: translateY(-6px);
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 14px;
+    color: #0f2b79;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: 4px;
+    background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+    transition: all 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background: linear-gradient(135deg, #012dee, #00c3ff);
+    color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* -------------------------- */
+/* Book Details View Styles   */
+/* -------------------------- */
+.book-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    align-items: flex-start;
+}
+
+.book-image {
+    flex: 0 0 auto;
+    max-width: 300px;
+}
+
+.book-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    padding: 10px;
+    background: #ffffff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    display: block;
+    margin: 0 auto;
+}
+
+.book-info {
+    flex: 1;
+}
+
+.book-info h2 {
+    font-size: 32px;
+    margin-top: 0;
+    color: #1e3a8a; /* Matched to header blue */
+}
+
+.book-meta {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 25px 0;
+}
+
+.book-meta li {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.description {
+    background: #fafafa;
+    padding: 20px;
+    border-left: 5px solid #374ee2;
+    border-radius: 6px;
+    margin-bottom: 25px;
+}
+
+.description h3 {
+    margin-top: 0;
+    color: #1e3a8a;
+    margin-bottom: 10px;
+}
+
+.description p {
+    line-height: 1.6;
+    color: #444;
+    font-size: 16px;
+}
+
+.btnorder {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #1e3a8a, #374ee2);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.btnorder:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-top: 15px;
+}
+
+/* Footer Styles (for consistency with admin.css) */
+footer {
+    margin-top: auto;
+    padding: 15px;
+    background: #ff0000;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ---------------------- */
+/* Responsive Design      */
+/* ---------------------- */
+@media (max-width: 900px) {
+    .book-details {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .book-image {
+        max-width: 80%;
+        margin: 0 auto;
+    }
+    
+    .description {
+        text-align: left;
+    }
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 20px;
+    }
+    
+    .ADT {
+        display: none; /* Hide welcome message on very small screens to save space */
+    }
+
+    .btnorder {
+        width: 100%;
+        padding: 14px 0;
+        box-sizing: border-box;
+    }
+}
